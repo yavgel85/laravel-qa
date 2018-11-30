@@ -10,9 +10,9 @@ class Question extends Model
         'title', 'body'
     ];
 
-    public function user(): void
+    public function user()
     {
-        $this->belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 
     public function setTitleAttribute($value): void
