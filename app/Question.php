@@ -6,21 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Question extends Model
 {
-    protected $fillable = [
-        'title', 'body'
-    ];
-
-    public function user()
-    {
+    protected $fillable = ['title', 'body'];
+    
+    public function user() {
         return $this->belongsTo(User::class);
-    }
+    }    
 
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
-    }
-
-    public function setTitleAttribute($value): void
+    public function setTitleAttribute($value)
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = str_slug($value);
@@ -28,7 +20,7 @@ class Question extends Model
 
     public function getUrlAttribute()
     {
-        return route('questions.show', $this->slug);
+        return route("questions.show", $this->slug);
     }
 
     public function getCreatedDateAttribute()
@@ -36,20 +28,26 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getStatusAttribute(): string
+    public function getStatusAttribute()
     {
         if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
-                return 'answered-accepted';
+                return "answered-accepted";
             }
-            return 'answered';
+            return "answered";
         }
-
-        return 'unanswered';
+        return "unanswered";
     }
 
-    public function getBodyHtmlAttribute(): string
+    public function getBodyHtmlAttribute()
     {
         return \Parsedown::instance()->text($this->body);
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class);
+        // $question->answers->count()
+        // foreach ($question->answers as $answer)
     }
 }

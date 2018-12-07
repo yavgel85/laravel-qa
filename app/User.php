@@ -3,7 +3,6 @@
 namespace App;
 
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
@@ -31,16 +30,16 @@ class User extends Authenticatable
     public function questions()
     {
         return $this->hasMany(Question::class);
+    }  
+    
+    public function getUrlAttribute()
+    {
+        // return route("questions.show", $this->id);
+        return '#';
     }
 
     public function answers()
     {
         return $this->hasMany(Answer::class);
-    }
-
-    public function getUrlAttribute()
-    {
-//        return route('questions.show', $this->id);
-        return '#';
     }
 }

@@ -19,7 +19,7 @@ class CreateAnswersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->text('body');
             $table->integer('votes_count')->default(0);
-            $table->timestampsTz();
+            $table->timestamps();
         });
     }
 

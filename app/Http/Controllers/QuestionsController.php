@@ -2,27 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AskQuestionRequest;
 use App\Question;
 use Illuminate\Http\Request;
+use App\Http\Requests\AskQuestionRequest;
 
 class QuestionsController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth', ['except' => ['index ,show']]);
+    public function __construct() {
+        $this->middleware('auth', ['except' => ['index', 'show']]);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        $questions = Question::with('user')->latest()->paginate(5);
+    {        
+        $questions = Question::with('user')->latest()->paginate(10);
 
-        return view('questions.index', compact('questions'));
+        return view('questions.index', compact('questions'));        
     }
 
     /**
@@ -40,14 +39,14 @@ class QuestionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  AskQuestionRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(AskQuestionRequest $request)
     {
         $request->user()->questions()->create($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success', 'Your question has been submitted');
+        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
     }
 
     /**
@@ -66,48 +65,43 @@ class QuestionsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Question $question
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit(Question $question)
     {
-        $this->authorize('update', $question);
-
-        return view('questions.edit', compact('question'));
+        $this->authorize("update", $question);
+        return view("questions.edit", compact('question'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  AskQuestionRequest $request
-     * @param  \App\Question $question
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(AskQuestionRequest $request, Question $question)
     {
-        $this->authorize('update', $question);
+        $this->authorize("update", $question);
 
         $question->update($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success', 'Your question has been updated');
+        return redirect('/questions')->with('success', "Your question has been updated.");
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Question $question
+     * @param  \App\Question  $question
      * @return \Illuminate\Http\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Exception
      */
     public function destroy(Question $question)
     {
-        $this->authorize('delete', $question);
+        $this->authorize("delete", $question);
 
         $question->delete();
 
-        return redirect('/questions')->with('success', 'Your question has been deleted');
+        return redirect('/questions')->with('success', "Your question has been deleted.");
     }
 }
