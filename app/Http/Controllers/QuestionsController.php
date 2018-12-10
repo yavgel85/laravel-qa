@@ -39,14 +39,14 @@ class QuestionsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  AskQuestionRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(AskQuestionRequest $request)
     {
         $request->user()->questions()->create($request->only('title', 'body'));
 
-        return redirect()->route('questions.index')->with('success', "Your question has been submitted");
+        return redirect()->route('questions.index')->with('success', 'Your question has been submitted');
     }
 
     /**
