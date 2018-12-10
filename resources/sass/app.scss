@@ -55,3 +55,43 @@ form.form-delete {
 .max-content-width {
     max-width: 850px;
 }
+
+.vote-controls {
+    min-width: 60px;
+    margin-right: 30px;
+    text-align: center;
+    color: $gray-700;
+
+    span, a {
+        display: block;
+    }
+
+    span {
+        &.votes-count {
+            font-size: 24px;
+        }
+        &.favorites-count {
+            font-size: 14px;
+        }
+    }
+
+    a {
+        cursor: pointer;
+        color: $gray-600;
+
+        &.off, &off:hover {
+            color: $gray-500;
+        }
+
+        &.favorite {
+            &.favorited, &favorited:hover {
+                color: #D4A849 !important;
+                //color: $warning;
+            }
+        }
+
+        &.vote-accepted {
+            color: $green;
+        }
+    }
+}
