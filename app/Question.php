@@ -12,7 +12,7 @@ class Question extends Model
         return $this->belongsTo(User::class);
     }    
 
-    public function setTitleAttribute($value)
+    public function setTitleAttribute($value): void
     {
         $this->attributes['title'] = $value;
         $this->attributes['slug'] = str_slug($value);
@@ -28,7 +28,7 @@ class Question extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getStatusAttribute()
+    public function getStatusAttribute(): string
     {
         if ($this->answers_count > 0) {
             if ($this->best_answer_id) {
@@ -39,13 +39,19 @@ class Question extends Model
         return 'unanswered';
     }
 
-    public function getBodyHtmlAttribute()
+    public function getBodyHtmlAttribute(): string
     {
         return \Parsedown::instance()->text($this->body);
     }
 
-    public function answers()
+    public function answers(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Answer::class);
+    }
+
+    public function acceptBestAnswer(Answer $answer): void
+    {
+        $this->best_answer_id = $answer->id;
+        $this->save();
     }
 }

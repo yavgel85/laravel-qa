@@ -18,7 +18,7 @@ class Answer extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function getBodyHtmlAttribute()
+    public function getBodyHtmlAttribute(): string
     {
         return \Parsedown::instance()->text($this->body);
     }
@@ -41,8 +41,18 @@ class Answer extends Model
         return $this->created_at->diffForHumans();
     }
 
-    public function getStatusAttribute()
+    public function getStatusAttribute(): string
     {
-        return $this->id === $this->question->best_answer_id ? 'vote-accepted' : '';
+        return $this->isBest() ? 'vote-accepted' : '';
+    }
+
+    public function getIsBestAttribute(): bool
+    {
+        return $this->isBest();
+    }
+
+    public function isBest(): bool
+    {
+        return $this->id === $this->question->best_answer_id;
     }
 }
