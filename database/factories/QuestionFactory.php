@@ -8,6 +8,6 @@ $factory->define(App\Question::class, function (Faker $faker) {
         'body' => $faker->paragraphs(random_int(3, 7), true),
         'views' => random_int(0, 10),
         // 'answers_count' => rand(0, 10),
-        'votes' => random_int(-3, 10)
+        //'votes_count' => random_int(-3, 10)
     ];
 });
